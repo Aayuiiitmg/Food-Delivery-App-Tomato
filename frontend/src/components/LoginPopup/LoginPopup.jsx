@@ -45,7 +45,11 @@ const onLogin = async (event) => {
     }
   } catch (error) {
     console.error(error);
-    alert("Something went wrong. Check console.");
+    if (error.response && error.response.data && error.response.data.message) {
+      alert("Error: " + error.response.data.message);
+    } else {
+      alert("Something went wrong. Check console.");
+    }
   }
 };
   return (
