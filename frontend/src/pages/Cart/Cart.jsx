@@ -2,6 +2,7 @@ import React from 'react'
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom'
+import { food_list as static_food_list } from '../../assets/assets'
 
 const Cart = () => {
   const { cartItems, food_list, removeFromCart, getTotalCartAmount,url } =
@@ -22,10 +23,21 @@ const Cart = () => {
         <hr />
         {food_list.map((item, index) => {
           if (cartItems[item._id] > 0) {
+            
+            let imgSrc = url + "/images/" + item.image;
+            if (item.image && item.image.startsWith("http")) {
+              imgSrc = item.image;
+            } else {
+              const defaultFood = static_food_list.find(f => f.name === item.name);
+              if (defaultFood) {
+                imgSrc = defaultFood.image;
+              }
+            }
+
             return (
-              <div>
-                <div className="cart-items-title cart-items-item" key={index}>
-                  <img src={url+"/images/"+item.image} alt={item.name} />
+              <div key={index}>
+                <div className="cart-items-title cart-items-item">
+                  <img src={imgSrc} alt={item.name} />
                   <p>{item.name}</p>
                   <p>${item.price}</p>
                   <p>{cartItems[item._id]}</p>

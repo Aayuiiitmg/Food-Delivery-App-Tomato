@@ -1,13 +1,25 @@
 import React,{useContext} from 'react'
 import './FoodItem.css'
-import {assets} from '../../assets/assets'
+import {assets, food_list} from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 const FoodItem = ({id,name,price,description,image}) => {    
     const {cartItems,setCartItems,addToCart,removeFromCart,url} = React.useContext(StoreContext);
+    
+    let imgSrc = url + "/images/" + image;
+    if (image && image.startsWith("http")) {
+      imgSrc = image; // Cloudinary or external URL
+    } else {
+      // For Vercel, serve default images directly from Vite bundle to avoid missing uploads/ folder
+      const defaultFood = food_list.find(item => item.name === name);
+      if (defaultFood) {
+        imgSrc = defaultFood.image;
+      }
+    }
+
   return (
     <div className='food-item'>
         <div className="food-item-img-container">
-            <img className='food-item-image' src={url+"/images/"+image} alt="" />
+            <img className='food-item-image' src={imgSrc} alt="" />
         </div>
       <div className="food-item-info">
         <div className="food-item-name-rating">
