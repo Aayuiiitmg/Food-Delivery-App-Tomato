@@ -41,11 +41,12 @@ const listFood = async (req, res) => {
 };
 
 // remove food
+// remove food
 const removeFood = async (req, res) => {
   try {
     const food = await foodModel.findById(req.body.id);
 
-    //  SAFETY CHECK
+    // SAFETY CHECK
     if (!food) {
       return res.status(404).json({
         success: false,
@@ -53,12 +54,15 @@ const removeFood = async (req, res) => {
       });
     }
 
-    // delete image
-    fs.unlink(`uploads/${food.image}`, (err) => {
-      if (err) console.log("Image delete error:", err);
-    });
+    // Only delete the image file if we are NOT on Vercel
+    // Vercel is "production" and has a read-only file system
+    if (process.env.NODE_ENV !== 'production') {
+      fs.unlink(`uploads/${food.image}`, (err) => {
+        if (err) console.log("Image delete error:", err);
+      });
+    }
 
-    // delete document
+    // delete document from MongoDB (This works fine on Vercel!)
     await foodModel.findByIdAndDelete(req.body.id);
 
     res.json({ success: true, message: "Food removed" });
@@ -68,5 +72,3 @@ const removeFood = async (req, res) => {
     res.json({ success: false, message: "Error" });
   }
 };
-
-export { addFood, listFood, removeFood };
