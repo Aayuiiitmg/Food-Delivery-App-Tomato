@@ -3,7 +3,7 @@ export const StoreContext = createContext(null);
 import axios from "axios";
 const StoreContextProvider=(props)=>{
     const [cartItems,setCartItems]=React.useState({});
-    const url=BACKEND_URL;
+   const url = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
     const [token,setToken]=React.useState("");
     const [food_list,setFoodList]=React.useState([]);
     const addToCart= async (itemId)=>{
