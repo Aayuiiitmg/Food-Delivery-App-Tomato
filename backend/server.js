@@ -19,7 +19,20 @@ app.use(express.json())
 app.use(cors())
 
 //db connection
-await connectDB();
+const startServer = async () => {
+    try {
+        await connectDB(); 
+        console.log("✅ Database Ready for Requests");
+        
+        app.listen(port, () => {
+            console.log(`Server started on http://localhost:${port}`);
+        });
+    } catch (error) {
+        console.error("❌ Critical Startup Error:", error);
+    }
+};
+
+startServer();
 
 
 
