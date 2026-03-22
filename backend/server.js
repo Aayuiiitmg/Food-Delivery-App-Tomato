@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(cors())
 
 //db connection
-connectDB();
+await connectDB();
 
 
 
@@ -42,4 +42,4 @@ if (process.env.NODE_ENV !== 'production') {
     })
 }
 
-export default app;
+export default app;

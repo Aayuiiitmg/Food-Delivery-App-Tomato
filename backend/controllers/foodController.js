@@ -31,14 +31,17 @@ const addFood = async (req, res) => {
 
 // list food
 const listFood = async (req, res) => {
-  try {
-    const foods = await foodModel.find({});
-    res.json({ success: true, data: foods });
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message || "Error" });
-  }
-};
+    try {
+        // Check if mongoose is connected (1 = connected)
+        if (mongoose.connection.readyState !== 1) {
+            return res.json({ success: false, message: "Database connecting, please refresh." });
+        }
+        const foods = await foodModel.find({});
+        res.json({ success: true, data: foods });
+    } catch (error) {
+        res.json({ success: false, message: "Error fetching food" });
+    }
+}
 
 // remove food
 // remove food
