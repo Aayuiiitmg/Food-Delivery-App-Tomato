@@ -43,6 +43,7 @@ const StoreContextProvider=(props)=>{
     const fetchFoodList = async (token) => {
         try {
           const response = await axios.get(url + "/api/food/list", { headers: { token } });
+          timeout: 15000
             if (response.data.success && response.data.data) {
                 setFoodList(response.data.data);
             } else {
