@@ -1,5 +1,6 @@
 import foodModel from "../models/foodModel.js";
 import fs from "fs";
+import mongoose from "mongoose";
 
 // add food item
 const addFood = async (req, res) => {
