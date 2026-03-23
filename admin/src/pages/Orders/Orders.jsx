@@ -6,15 +6,11 @@ import { assets } from '../../assets/assets';
 
 const Orders = ({url}) => {
   const [orders, setOrders] = useState([]); // Used useState directly for cleaner code
-  const token = localStorage.getItem("token"); 
 
   const fetchAllOrders = async () => {
-  if (!token) return; // Guard clause
-  
-  try {
-    const response = await axios.get(url + '/api/order/list', { headers: { token } });
+    try {
+      const response = await axios.get(url + '/api/order/list');
     if (response.data.success) {
-      // Direct replacement of data prevents "flickering"
       setOrders(response.data.data);
     }
   } catch (error) {
@@ -28,8 +24,7 @@ const Orders = ({url}) => {
     // 1. Send update request
     const response = await axios.post(
       url + "/api/order/status", 
-      { orderId, status: newStatus }, 
-      { headers: { token } }
+      { orderId, status: newStatus }
     );
 
     if (response.data.success) {
@@ -50,7 +45,7 @@ const Orders = ({url}) => {
 
   useEffect(() => {
     fetchAllOrders();
-  }, []);
+  }, [url]);
 
   return (
     <div className='order add'>

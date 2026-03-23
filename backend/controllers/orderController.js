@@ -58,7 +58,7 @@ const verifyOrder = async (req, res) => {
     const { orderId, success } = req.body;
     try {
         if (success) {
-            await orderModel.findByIdAndUpdate(orderId, { status: "Confirmed" });
+            await orderModel.findByIdAndUpdate(orderId, { status: "Food Processing" });
             res.json({ success: true, message: "Order confirmed" });
         } else {
             await orderModel.findByIdAndUpdate(orderId, { status: "Cancelled" });
