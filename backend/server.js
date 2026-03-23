@@ -1,6 +1,7 @@
 import express from "express" 
 import cors from "cors"
 import { connectDB } from "./config/db.js"
+import mongoose from "mongoose";
 import foodRouter from "./routes/foodRoute.js"
 import userRouter from "./routes/userRoute.js"
 import cartRouter from "./routes/cartRoute.js"
@@ -14,9 +15,16 @@ const app=express()
 const port=4000
 
 //middleware
-
 app.use(express.json())
 app.use(cors())
+
+// DB Connection Middleware (Crucial for Vercel/Serverless)
+app.use(async (req, res, next) => {
+    if (mongoose.connection.readyState !== 1) {
+        await connectDB();
+    }
+    next();
+});
 
 //db connection
 const startServer = async () => {

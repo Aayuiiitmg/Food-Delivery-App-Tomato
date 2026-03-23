@@ -1,6 +1,7 @@
 import foodModel from "../models/foodModel.js";
 import fs from "fs";
 import mongoose from "mongoose";
+import { connectDB } from "../config/db.js";
 
 // add food item
 const addFood = async (req, res) => {
@@ -33,9 +34,10 @@ const addFood = async (req, res) => {
 // list food
 const listFood = async (req, res) => {
     try {
-        // Check if mongoose is connected (1 = connected)
+        // Ensure Database Connection is Ready (Especially for Vercel Cold Boots!)
         if (mongoose.connection.readyState !== 1) {
-            return res.json({ success: false, message: "Database connecting, please refresh." });
+            console.log("⚠️ DB not ready, attempting to reconnect...");
+            await connectDB();
         }
         const foods = await foodModel.find({});
         res.json({ success: true, data: foods });
